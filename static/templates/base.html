@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{.CoinName}} Explorer</title>
+    <meta name="description" content="Search {{.CoinName}} Blockchain for block, transaction, address or xpub. You can also send a transaction or check network stats and github activity.">
+    <meta property="og:title" content="{{.CoinName}} Explorer" />
+    <meta property="og:description" content="Search {{.CoinName}} Blockchain for block, transaction, address or xpub. You can also send a transaction or check network stats and github activity." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://{{.Hostname}}{{.RelativeURL}}" />
+    <meta property="og:site_name" content="{{.CoinName}} Explorer" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:image" content="https://{{.Hostname}}/static/pivx-og.jpg">
+    <meta property="og:image:alt" content="{{.CoinName}} Image" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@_PIVX">
+    <meta name="twitter:creator" content="@_PIVX">
+    <link rel="icon" type="image/png" href="/static/pivx-32.png" />
+</head>
+<body class="d-flex flex-column">
+    <header id="header" class="container-fluid bg-purple">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-gradient">
+            <div class="container">
+                <a class="navbar-brand" href="/" title="Home">
+                    <div alt="Logo" class="trezor-logo-svg-white"><img src="/static/pivx.png" alt="pivx-logo" height="40" /> <span class="explorer pull-left">Explorer</span></div>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/blocks">Blocks</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/status">Status</a>
+                        </li>
+                        <li class="nav-ite md-none d-md-block">
+                            <a class="nav-link" href="/sendtx">Send-TX</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient">
+            <div class="container pb-4 pt-2">
+                <form id="search" class="mx-2 my-auto d-inline w-100" action="/search" method="get">
+                    <div class="input-group">
+                        <label class="mr-sm-2 mb-0 sr-only" for="q">Search</label>
+                        <input type="text" class="form-control rounded-left" name="q" placeholder="Search for block, transaction, address or xpub">
+                        <span class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit" form="search" value="GO">GO</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </nav>
+    </header>
+    <main id="wrap">
+        <div class="container py-4">
+            {{- template "specific" . -}}
+        </div>
+    </main>
+    <footer id="footer" class="footer bg-purple">
+        <div class="container py-4">
+            <div class="row align-items-center justify-content-center text-center">
+                <div class="col-md-4 pb-2 pb-md-0">
+                    <p class="m-0 p-0">
+                        <a target="_blank" rel="noopener noreferrer" class="mx-2" href="https://pivx.org">PIVX.org</a>
+                        <a target="_blank" rel="noopener noreferrer" class="mx-2" href="https://github.com/PIVX-Project">Github</a>
+                        <a target="_blank" rel="noopener noreferrer" class="mx-2" href="https://forum.pivx.org">Forum</a>
+                        <a target="_blank" rel="noopener noreferrer" class="mx-2" href="https://discord.pivx.org">Discord</a>
+                    </p>
+                </div>
+                <div class="col-md-4 pb-2 pb-md-0">
+                    <p class="m-0 p-0">
+                        <a href="http://satoshilabs.com/" target="_blank" rel="noopener noreferrer">© 2022 SatoshiLabs</a> / <a href="https://github.com/random-zebra" target="_blank" rel="noopener noreferrer">© 2022 Random.Zebra</a>
+                    </p>
+                </div>
+                <div class="col-md-4 pb-2 pb-md-0">
+                    <p class="m-0 p-0">
+                        <a target="_blank" rel="noopener noreferrer" href="https://wiki.trezor.io/Blockbook">Made with TREZOR Blockbook</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+{{- if .IsCharts -}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script src="/static/js/charts.js"></script>
+{{- end -}}
+</body>
+</html>

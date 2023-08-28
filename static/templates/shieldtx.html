@@ -1,0 +1,91 @@
+{{define "specific"}}{{$cs := .CoinShortcut}}{{$tx := .Tx}}
+<h1>Shield Transaction</h1>
+<div class="alert alert-data ellipsis">
+    <span class="data">{{$tx.Txid}}</span>
+</div>
+<h3>Summary</h3>
+<div class="row">
+  <div class="col-md-6">
+    <table class="table data-table">
+        <tbody>
+            <tr>
+                <td style="width: 35%;">In Block</td>
+                <td class="data">
+                  {{- if $tx.Confirmations -}}<a href="/block/{{$tx.Blockheight}}">{{$tx.Blockheight}}</a>
+                  {{- else -}}Unconfirmed{{end}}
+                </td>
+            </tr>
+            <tr>
+                <td>Total Transparent Input</td>
+                <td class="data">{{formatAmount $tx.ValueInSat}} {{$cs}}</td>
+            </tr>
+            <tr>
+                <td>Total Transparent Output</td>
+                <td class="data">{{formatAmount $tx.ValueOutSat}} {{$cs}}</td>
+            </tr>
+            <tr>
+                <td>Fees</td>
+                <td class="data">{{formatAmount $tx.FeesSat}} {{$cs}}</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <table class="table data-table">
+        <tbody>
+            <tr>
+                <td style="width: 35%;">Time</td>
+                <td class="data">
+                  {{- if $tx.Blocktime -}}{{formatUnixTime $tx.Blocktime}}{{end}}
+                </td>
+            </tr>
+            <tr>
+                <td>Shield Notes Spent</td>
+                <td class="data">{{$tx.ShieldIns}}</td>
+            </tr>
+            <tr>
+                <td>Shield Notes Minted</td>
+                <td class="data">{{ $tx.ShieldOuts}}</td>
+            </tr>
+            <tr title="Total value transferred to the SHIELD pool">
+                <td>Shield Supply Delta</td>
+                <td class="data">{{formatNegatedAmount $tx.ShieldValBal}} {{$cs}}</td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+</div>
+<h3>Details</h3>
+<div class="data-div">
+    {{template "txdetail" .}}
+</div>
+<div class="data-div">
+    <h5>Raw Transaction</h5>
+    <div class="alert alert-data" style="word-wrap: break-word; font-size: smaller;">
+        <pre id="txSpecific"></pre>
+    </div>
+    <script type="text/javascript">
+        txSpecific = {{$tx.CoinSpecificJSON}};
+        function syntaxHighlight(json) {
+            json = JSON.stringify(json, undefined, 2);
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+        document.getElementById('txSpecific').innerHTML = syntaxHighlight(txSpecific);
+    </script>
+</div>
+{{end}}

@@ -1,0 +1,115 @@
+{{define "specific"}}{{$cs := .CoinShortcut}}{{$bb := .Info.Blockbook}}{{$be := .Info.Backend}}{{$blocks := .Blocks}}
+{{- if $bb.InitialSync -}}
+<h3 class="bg-danger text-white" style="padding: 20px;">Application is now in initial synchronization and does not provide any data.</h3>
+{{- end -}}
+{{- if not $bb.SyncMode -}}
+<h3 class="bg-warning text-white" style="padding: 20px;">Synchronization with backend is disabled, the state of index is not up to date.</h3>
+{{- end -}}
+{{- if .InternalExplorer -}}
+<h1 align="center">{{.CoinLabel}} Block Explorer</h1>
+<br>
+{{- end -}}
+<h3>Block index</h3>
+<div class="row">
+    <div class="col-md-6">
+        <table class="table data-table">
+            <tbody>
+                <tr>
+                    <td style="width: 40%;">Last Indexed Block</td>
+                    <td class="data">
+                        {{- if .InternalExplorer -}}
+                            <a href="/block/{{$bb.BestHeight}}">{{$bb.BestHeight}}</a>
+                        {{else}}
+                            {{$bb.BestHeight}}
+                        {{- end -}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Best Block Hash</td>
+                    <td class="data ellipsis">{{$be.Bestblockhash}}</td>
+                </tr>
+                <tr>
+                    <td>Last Block Update</td>
+                    <td class="data">{{formatTime $bb.LastBlockTime}}</td>
+                </tr>
+                <tr>
+                    <td>Protocol Version</td>
+                    <td class="data">{{$be.ProtocolVersion}}</td>
+                </tr>
+                <tr>
+                    <td>Masternode Count</td>
+                    <td class="data ellipsis">{{$be.MasternodeCount}}</td>
+                </tr>
+                <tr>
+                    <td>Next Superblock</td>
+                    <td class="data">{{$be.NextSuperBlock}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <table class="table data-table">
+            <tbody>
+                <tr>
+                    <td style="width: 40%;">Difficulty</td>
+                    <td class="data">{{$be.Difficulty}}</td>
+                </tr>
+                <tr>
+                    <td>Mempool Size</td>
+                    <td class="data">{{$bb.MempoolSize}}</td>
+                </tr>
+                <tr>
+                    <td>Last Mempool Update</td>
+                    <td class="data">{{formatTime $bb.LastMempoolTime}}</td>
+                </tr>
+                <tr>
+                    <td>Total PIV Supply</td>
+                    <td class="data ellipsis">{{formatSupply $be.MoneySupply}}&nbsp;{{$cs}}</td>
+                </tr>
+                <tr>
+                    <td>Transparent Supply</td>
+                    <td>
+                      <span class="data">{{formatSupply $be.TransparentSupply}}&nbsp;{{$cs}}</span>&nbsp;
+                      <em>({{getPercent $be.TransparentSupply $be.MoneySupply}})
+                    </td>
+                </tr>
+                <tr>
+                    <td>Shield Supply</td>
+                    <td>
+                      <span class="data">{{formatSupply $be.ShieldSupply}}&nbsp;{{$cs}}</span>&nbsp;
+                      <em>({{getPercent $be.ShieldSupply $be.MoneySupply}})
+                    </td>
+                </tr>
+
+                <tr>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<h3 style="display: inline;">Last blocks</h3> &nbsp;(<a href='/blocks'>see all</a>)
+<div class="data-div">
+    <table class="table table-striped data-table table-hover">
+        <thead>
+            <tr>
+                <th style="width: 10%;">Height</th>
+                <th style="width: 48%;">Hash</th>
+                <th>Timestamp</th>
+                <th class="text-right" title="number of Transactions in block" style="width: 10%;">TXs</th>
+                <th class="text-right" title="size in Bytes" style="width: 10%;">Size</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{- range $b := $blocks.Blocks -}}
+            <tr>
+                <td><a href="/block/{{$b.Height}}">{{$b.Height}}</a></td>
+                <td class="ellipsis">{{$b.Hash}}</td>
+                <td>{{formatUnixTime $b.Time}}</td>
+                <td class="text-right">{{$b.Txs}}</td>
+                <td class="text-right">{{$b.Size}}</td>
+            </tr>
+            {{- end -}}
+        </tbody>
+    </table>
+</div>
+{{end}}

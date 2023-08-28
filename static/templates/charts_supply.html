@@ -1,0 +1,14 @@
+{{define "specific" -}}{{$data := .ChartData}}
+<h1>Supply Statistics</h1>
+Click on the legends to toggle individual data-sets.
+
+<h3>Shield Supply</h3>
+<p>Total shield pool value (in PIV) over block number.</p>
+{{template "canvas_blockrange" "canv_supply"}}
+<br>
+
+<script type="text/javascript">
+    supply_data_Json = {{$data}}
+</script>
+<script src="../static/js/charts_supply.js"></script>
+{{- end -}}
